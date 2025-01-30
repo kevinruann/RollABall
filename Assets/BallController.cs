@@ -5,6 +5,8 @@ public class BallController : MonoBehaviour
     public Rigidbody sphereRigidbody;
     public float ballSpeed = 2f;
 
+    private bool isCollidingWithGround = false;
+    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -34,10 +36,22 @@ public class BallController : MonoBehaviour
         {
             inputVector += Vector2.left;
         }
+        
+        if (Input.GetKey(KeyCode.Space) && isCollidingWithGround == true)
+        {
+            sphereRigidbody.AddForce(Vector3.up * ballSpeed, ForceMode.Impulse);
+
+        }
+        
         Vector3 inputXZPlane = new Vector3(inputVector.x, 0, inputVector.y);
         sphereRigidbody.AddForce(inputXZPlane * ballSpeed);
         Debug.Log("Resultant Vector: " + inputVector);
         Debug.Log("Resultant 3D Vector: " + inputXZPlane);
 
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        isCollidingWithGround = true;
     }
 }
